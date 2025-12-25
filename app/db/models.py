@@ -1,7 +1,7 @@
 """SQLAlchemy models."""
 
-from datetime import datetime
 from sqlalchemy import Column, String, Float, Integer, DateTime, JSON, Text
+from sqlalchemy.sql import func
 import uuid
 
 from app.db.database import Base
@@ -24,4 +24,4 @@ class ActionAudit(Base):
     axis_processing_ms = Column(Integer, nullable=False)
     action_taken = Column(String(32), nullable=False)
     processing_ms = Column(Integer, nullable=False)
-    created_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())

@@ -1,8 +1,9 @@
-# Action-Sink API
+# Action-Sink API Contract
 
-> Version 1.0.0 | Schema v1
+> **Service Version:** 1.0.0
+> **Schema Version:** v1
 
-This service receives Axis output and logs it to an append-only audit table. It's designed to be minimal, idempotent, and fail-safe.
+This service acts as the reliable "write-ahead log" for Axis decisions. It accepts `axis_output` and guarantees an append-only audit trail. It is designed to be **fail-closed**: if we cannot write to disk, we reject the request.
 
 ---
 
