@@ -32,9 +32,7 @@ def upgrade() -> None:
         sa.Column("processing_ms", sa.Integer, nullable=False),
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
     )
-    op.create_index("ix_action_audit_message_id", "action_audit", ["message_id"], unique=True)
 
 
 def downgrade() -> None:
-    op.drop_index("ix_action_audit_message_id", table_name="action_audit")
     op.drop_table("action_audit")

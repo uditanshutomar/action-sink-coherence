@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
+from typing import List
 from pydantic import BaseModel, Field, field_validator
 
 from app.config import settings
@@ -33,7 +33,7 @@ class AxisOutput(BaseModel):
     def validate_reason_codes(cls, v: List[str]) -> List[str]:
         for code in v:
             if len(code) > settings.MAX_REASON_CODE_LENGTH:
-                raise ValueError(f"reason_code exceeds max length of {settings.MAX_REASON_CODE_LENGTH}")
+                raise ValueError(f"reason_code exceeds {settings.MAX_REASON_CODE_LENGTH} chars")
         return v
 
 
