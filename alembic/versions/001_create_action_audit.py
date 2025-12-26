@@ -18,7 +18,7 @@ def upgrade() -> None:
     op.create_table(
         "action_audit",
         sa.Column("id", sa.String(36), primary_key=True),
-        sa.Column("message_id", sa.String(256), nullable=False, unique=True),
+        sa.Column("message_id", sa.String(256), nullable=False),
         sa.Column("tenant_id", sa.String(128), nullable=False, index=True),
         sa.Column("schema_version", sa.String(16), nullable=False),
         sa.Column("event_timestamp", sa.DateTime(timezone=True), nullable=False),
@@ -32,7 +32,10 @@ def upgrade() -> None:
         sa.Column("processing_ms", sa.Integer, nullable=False),
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
     )
+    # Explicit unique index for reliable race-condition handling
+    op.create_index("ix_action_audit_message_id", "action_audit", ["message_id"], unique=True)
 
 
 def downgrade() -> None:
+    op.drop_index("ix_action_audit_message_id", table_name="action_audit")
     op.drop_table("action_audit")
